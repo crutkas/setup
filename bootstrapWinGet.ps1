@@ -10,8 +10,10 @@ if(!(($isWinGetRecent[0] -gt 1) -or ($isWinGetRecent[0] -ge 1 -and $isWinGetRece
    Write-Information "Downloading WinGet and its dependencies..."
 
    for ($i = 0; $i -lt $uris.Length; $i++) {
-       Write-Information "Downloading: " + $paths[$i] + " from " + $uris[$i]
-       Invoke-WebRequest -Uri $uris[$i] -OutFile $paths[$i]
+       $filePath = $paths[$i]
+       $fileUri = $uris[$i]
+       Write-Information "Downloading: " + $filePat + " from " + $fileUri
+       Invoke-WebRequest -Uri $fileUri -OutFile $filePat
    }
 
    Write-Information "Installing WinGet and its dependencies..."
