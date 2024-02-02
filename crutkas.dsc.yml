@@ -5,15 +5,16 @@ properties:
   resources:
  
 # Creates a new Dev Drive volume with Drive letter 'Z' and label 'Dev Drive 1' onto disk 0
-    - resource: Disk/StorageDsc
+    - resource: Disk
       id: DevDrive1
       directives:
+        module: StorageDsc
         description: 'Format a new Dev Drive volume onto Disk 0'
         allowPrerelease: true
       settings:
         DiskId: '0'
         DiskIdType: 'Number'
-        DriveLetter: 'D'
+        DriveLetter: 'Z'
         FSLabel: 'Dev Drive'
         DevDrive: true
         AllowDestructive: true
@@ -71,7 +72,7 @@ properties:
         allowPrerelease: true
       settings:
         HttpsUrl: https://github.com/microsoft/powertoys.git
-        RootDirectory: 'D:/Source/' # will clone into /PowerToys root
+        RootDirectory: 'Z:/Source/' # will clone into /PowerToys root
 
 # I would call https://github.com/microsoft/PowerToys/blob/main/.configurations/configuration.dsc.yaml but can't directly call since i need enterprise vs community currently.
 # Needs to get dev drive up and working to clone into that 
@@ -100,7 +101,7 @@ properties:
       settings:
         productId: Microsoft.VisualStudio.Product.Enterprise
         channelId: VisualStudio.17.Release
-        vsConfigFile: 'd:\source\powertoys\.vsconfig'
+        vsConfigFile: 'Z:\source\powertoys\.vsconfig'
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.VisualStudioCode
