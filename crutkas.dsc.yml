@@ -1,0 +1,162 @@
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.2
+# Reference: https://github.com/microsoft/PowerToys/blob/main/doc/devdocs/readme.md#compiling-powertoys
+properties:
+  configurationVersion: 0.2.0
+  resources:
+ 
+# Creates a new Dev Drive volume with Drive letter 'Z' and label 'Dev Drive 1' onto disk 0
+    - resource: Disk/StorageDsc
+      id: DevDrive1
+      directives:
+        description: 'Format a new Dev Drive volume onto Disk 0'
+        allowPrerelease: true
+      settings:
+        DiskId: '0'
+        DiskIdType: 'Number'
+        DriveLetter: 'D'
+        FSLabel: 'Dev Drive'
+        DevDrive: true
+        AllowDestructive: true
+        FSFormat: 'ReFS'
+        Size: '75Gb'
+            
+ # START It works but unknown if it works
+    - resource: xWindowsUpdate/xWindowsUpdateAgent
+      directives:
+        description: Forcing Windows Update ... NOW
+        allowPrerelease: true
+      settings:
+        IsSingleInstance: Yes
+        UpdateNow: true
+        Source: WindowsUpdate
+        Category:
+          - Security
+          - Important
+          - Optional
+ 
+ # END It works but unknown if it works
+
+    - resource: Microsoft.Windows.Developer/HideFileExtensions
+      directives:
+        description: Show file extensions.  
+        allowPrerelease: true
+      settings:
+        Ensure: Absent
+
+    - resource: Microsoft.Windows.Developer/ShowHiddenFiles
+      directives:
+        description: Show hidden files
+      settings:
+        Ensure: Present
+
+    - resource: Microsoft.Windows.Developer/ShowTaskViewButton
+      directives:
+        description: Show Taskview in taskbar.  
+        allowPrerelease: true
+      settings:
+        Ensure: Absent # not working currently for some reason
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: git.git
+      directives:
+        description: Install git.git
+        allowPrerelease: true
+      settings:
+        id: git.git
+        source: winget
+        
+    - resource: GitDsc/GitClone
+      directives:
+        description: Clone the winget-cli repository
+        allowPrerelease: true
+      settings:
+        HttpsUrl: https://github.com/microsoft/powertoys.git
+        RootDirectory: 'D:/Source/' # will clone into /PowerToys root
+
+# I would call https://github.com/microsoft/PowerToys/blob/main/.configurations/configuration.dsc.yaml but can't directly call since i need enterprise vs community currently.
+# Needs to get dev drive up and working to clone into that 
+    - resource: Microsoft.Windows.Developer/DeveloperMode
+      directives:
+        description: Enable Developer Mode
+        allowPrerelease: true
+      settings:
+        Ensure: Present
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Microsoft.VisualStudio.2022.Enterprise
+      directives:
+        description: Install Microsoft.VisualStudio.2022.Enterprise
+        allowPrerelease: true
+      settings:
+        id: Microsoft.VisualStudio.2022.Enterprise
+        source: winget
+
+    - resource: Microsoft.VisualStudio.DSC/VSComponents
+      dependsOn:
+        - Microsoft.VisualStudio.2022.Enterprise
+      directives:
+        description: Install required VS workloads
+        allowPrerelease: true
+      settings:
+        productId: Microsoft.VisualStudio.Product.Enterprise
+        channelId: VisualStudio.17.Release
+        vsConfigFile: 'd:\source\powertoys\.vsconfig'
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Microsoft.VisualStudioCode
+      directives:
+        description: Install Microsoft.VisualStudioCode
+        allowPrerelease: true
+      settings:
+        id: Microsoft.VisualStudioCode
+        source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Microsoft.PowerShell
+      directives:
+        description: Install Microsoft.PowerShell 7
+        allowPrerelease: true
+      settings:
+        id: Microsoft.PowerShell
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Microsoft.Office
+      directives:
+        description: Install Microsoft.Office
+        allowPrerelease: true
+      settings:
+        id: Microsoft.Office
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Microsoft.Teams
+      directives:
+        description: Install Microsoft.Teams
+        allowPrerelease: true
+      settings:
+        id: Microsoft.Teams
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Microsoft.PowerToys
+      directives:
+        description: Install Microsoft.PowerToys
+        allowPrerelease: true
+      settings:
+        id: Microsoft.PowerToys
+        source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: AgileBits.1Password
+      directives:
+        description: Install AgileBits.1Password
+        allowPrerelease: true
+      settings:
+        id: AgileBits.1Password
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Logitech.OptionsPlus
+      directives:
+        description: Install Logitech.OptionsPlus
+        allowPrerelease: true
+      settings:
+        id: Logitech.OptionsPlus
+        source: winget

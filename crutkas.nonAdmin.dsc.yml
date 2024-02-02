@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.2
+# Reference: https://github.com/microsoft/PowerToys/blob/main/doc/devdocs/readme.md#compiling-powertoys
+properties:
+  configurationVersion: 0.2.0
+  resources:
+  
+# needs non-admin
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Spotify.Spotify
+      directives:
+        description: Install Spotify.Spotify
+        allowPrerelease: true
+      settings:
+        id: Spotify.Spotify
+        source: winget
