@@ -59,18 +59,24 @@ Any monitor
 - Turn off show recently opened items in start menu
 - Turn off Show recommendations
 
-### Notifications
-- Turn on do not disturb
-- Turn off outlook
-- turn off teams
+### Taskbar
+- Search to hidden
+- Turn off Copilot
+- Turn off taskview
+- Turn off widgets
 
-### Pin taskbar
+#### Pin taskbar
 Unpin everything
 - Edge 
 - outlook
 - VS
 - vs code
 - Dev Home
+
+### Notifications
+- Turn on do not disturb
+- Turn off outlook
+- turn off teams
 
 ### audio output config
 This would be the config for my desktop but i would have a var for laptops for work profile i'd group set.
@@ -93,6 +99,7 @@ Cannot currently do, only dark / light.  I have hybrid
 ### Edge  (Maybe regkey)
 - Bing discovery disabled
 - Sidebar disabled
+
 
 ### Authentication
 - Outlook
