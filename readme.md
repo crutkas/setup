@@ -33,9 +33,9 @@ I doubt this can be scripted out to connect on a new computer.  But I can dream 
 ### File Explorer
 - --Done - Show ext--
 - --Done - Show hidden files--
-Uncheck "Include account-based insights"
-Uncheck "show frequently used folders"
-Check Display the full path in titlebar
+- Uncheck "Include account-based insights"
+- Uncheck "show frequently used folders"
+- Check Display the full path in titlebar
 
 ### Snapping configurations
 - no top
