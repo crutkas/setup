@@ -18,6 +18,10 @@ Most everything in the dsc.yml should work.
 
 ## TO-DO list
 
+### Script optimization
+
+- Move boostrap back into boot.ps1 (didn't realize the boot.ps1 needed it local)
+
 ### Windows Terminal
 - Set PowerShell 7 as default
 
@@ -88,4 +92,8 @@ Cannot currently do, only dark / light.  I have hybrid
 
 ### Edge  (Maybe regkey)
 - Bing discovery disabled
-- Sidebar disabled 
+- Sidebar disabled
+
+### Authentication
+- Outlook
+- Visual Studio enterprise
