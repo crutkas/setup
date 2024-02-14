@@ -37,6 +37,20 @@ I doubt this can be scripted out to connect on a new computer.  But I can dream 
 - Uncheck "show frequently used folders"
 - Check Display the full path in titlebar
 
+### Power setting
+- set to performance
+
+### Try outlook setting
+```
+New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Name 'ZeroConfigExchange' -Value "1" -PropertyType DWORD -Force
+New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Name 'DefaultProfile' -Value "OutlookAuto" -PropertyType String -Force
+New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Name 'Default' -Value "" -PropertyType String -Force
+
+gpupdate /force
+
+outlook.exe
+```
+
 ### Snapping configurations
 - no top
 - no multi-app smart suggestion
