@@ -18,9 +18,24 @@ Most everything in the dsc.yml should work.
 
 ## TO-DO list
 
+### Try outlook setting
+```
+New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Name 'ZeroConfigExchange' -Value "1" -PropertyType DWORD -Force
+New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Name 'DefaultProfile' -Value "OutlookAuto" -PropertyType String -Force
+New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Name 'Default' -Value "" -PropertyType String -Force
+
+gpupdate /force
+
+outlook.exe
+```
+
+### PowerToys dev config
+
+- Migrate to https://github.com/microsoft/PowerToys/blob/main/.configurations/configuration.vsEnterprise.dsc.yaml
+
 ### Script optimization
 
-- Move boostrap back into boot.ps1 (didn't realize the boot.ps1 needed it local)
+- Move boostrap back into boot.ps1 (didn't realize the boot.ps1 needed it local) ...
 
 ### Windows Terminal
 - Set PowerShell 7 as default
@@ -39,28 +54,12 @@ I doubt this can be scripted out to connect on a new computer.  But I can dream 
 
 ### Power setting
 - set to performance
-
-### Try outlook setting
-```
-New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Name 'ZeroConfigExchange' -Value "1" -PropertyType DWORD -Force
-New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Name 'DefaultProfile' -Value "OutlookAuto" -PropertyType String -Force
-New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Name 'Default' -Value "" -PropertyType String -Force
-
-gpupdate /force
-
-outlook.exe
-```
-
 ### Snapping configurations
 - no top
 - no multi-app smart suggestion
 
 ### Monitors
-Any monitor
-- 100% scale
-
-### Logitech Option+ Settings
-- Mouse wheel to ratchet only.
+- All monitors 100% scale
 
 ### System tray
 - Everything to visible
@@ -114,7 +113,9 @@ Cannot currently do, only dark / light.  I have hybrid
 - Bing discovery disabled
 - Sidebar disabled
 
-
 ### Authentication
 - Outlook
 - Visual Studio enterprise
+
+### Logitech Option+ Settings
+- Mouse wheel to ratchet only.
