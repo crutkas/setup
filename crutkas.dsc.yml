@@ -22,19 +22,7 @@ properties:
         Size: '75Gb'
             
  # START It works but unknown if it works
-    - resource: xWindowsUpdate/xWindowsUpdateAgent
-      directives:
-        description: Forcing Windows Update ... NOW
-        allowPrerelease: true
-      settings:
-        IsSingleInstance: Yes
-        UpdateNow: true
-        Source: WindowsUpdate
-        Category:
-          - Security
-          - Important
-          - Optional
- 
+ # would be where i'd call Windows Update via DSC
  # END It works but unknown if it works
 
     - resource: Microsoft.Windows.Developer/HideFileExtensions
