@@ -33,10 +33,6 @@ outlook.exe
 
 - Migrate to https://github.com/microsoft/PowerToys/blob/main/.configurations/configuration.vsEnterprise.dsc.yaml
 
-### Script optimization
-
-- Move boostrap back into boot.ps1 (didn't realize the boot.ps1 needed it local) ...
-
 ### Windows Terminal
 - Set PowerShell 7 as default
 
@@ -54,6 +50,7 @@ I doubt this can be scripted out to connect on a new computer.  But I can dream 
 
 ### Power setting
 - set to performance
+
 ### Snapping configurations
 - no top
 - no multi-app smart suggestion
