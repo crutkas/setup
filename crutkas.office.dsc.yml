@@ -1,9 +1,10 @@
 # yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.2
-# Reference: https://github.com/microsoft/PowerToys/blob/main/doc/devdocs/readme.md#compiling-powertoys
 properties:
   configurationVersion: 0.2.0
   resources:
-     - resource: Microsoft.WinGet.DSC/WinGetPackage
+  
+# needs non-admin
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.Office
       directives:
         description: Install Microsoft.Office
@@ -11,9 +12,8 @@ properties:
       settings:
         id: Microsoft.Office
         source: winget
-
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Microsoft.Teams
+      id: Spotify.Teams
       directives:
         description: Install Microsoft.Teams
         allowPrerelease: true
