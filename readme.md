@@ -50,10 +50,7 @@ Most everything in the dsc.yml should work.
 - Turn off Show recommendations
 
 ### Taskbar
-- Search to hidden
 - Turn off Copilot
-- Turn off taskview
-- Turn off widgets
 
 #### Pin taskbar
 Unpin everything
