@@ -21,10 +21,6 @@ properties:
         FSFormat: 'ReFS'
         Size: '75Gb'
             
- # START It works but unknown if it works
- # would be where i'd call Windows Update via DSC
- # END It works but unknown if it works
-
     - resource: Microsoft.Windows.Developer/HideFileExtensions
       directives:
         description: Show file extensions.  

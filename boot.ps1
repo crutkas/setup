@@ -54,14 +54,17 @@ $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIden
 
 $dscUri = "https://raw.githubusercontent.com/crutkas/setup/main/"
 $dscNonAdmin = "crutkas.nonAdmin.dsc.yml";
-$dscAdmin = "crutkas.dsc.yml";
+$dscAdmin = "crutkas.dev.dsc.yml";
+$dscOffice = "crutkas.office.dsc.yml";
+$dscPowerToysEnterprise = "Z:\source\powertoys\.configurations\configuration.vsEnterprise.dsc.yaml";
 
+$dscOfficeUri = $dscUri + $dscOffice;
 $dscNonAdminUri = $dscUri + $dscNonAdmin 
 $dscAdminUri = $dscUri + $dscAdmin
 
 # amazing, we can now run WinGet get fun stuff
 if (!$isAdmin) {
-   # love tap terminal to it gets registered moving foward
+   # Shoulder tap terminal to it gets registered moving foward
    Start-Process shell:AppsFolder\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App
 
    Invoke-WebRequest -Uri $dscNonAdminUri -OutFile $dscNonAdmin 
@@ -76,9 +79,51 @@ if (!$isAdmin) {
 }
 else {
    # admin section now
-   Invoke-WebRequest -Uri $dscAdminUri -OutFile $dscAdmin 
-   winget configuration -f $dscAdmin 
+   # ---------------
+   # Forcing Windows Update -- goal is move to dsc
+
+    $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
+    $Searcher = New-Object -ComObject Microsoft.Update.Searcher
+    $Session = New-Object -ComObject Microsoft.Update.Session
+    $Installer = New-Object -ComObject Microsoft.Update.Installer
+ 
+    $Searcher.ServerSelection = 2
+ 
+    $Result = $Searcher.Search("IsInstalled=0 and IsHidden=0")
+ 
+    $Downloader = $Session.CreateUpdateDownloader()
+    $Downloader.Updates = $Result.Updates
+    $Downloader.Download()
+ 
+    $Installer.Updates = $Result.Updates
+    $Installer.Install()
+    # Forcing Windows Update complete 
+    # ---------------
+    # Installing office workload
+    New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Force
+    New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Name 'DefaultProfile' -Value "OutlookAuto" -PropertyType String -Force
+
+    New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Force
+    New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Name 'Default' -Value "" -PropertyType String -Force
+
+
+    New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Force
+    New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Name 'ZeroConfigExchange' -Value "1" -PropertyType DWORD -Force
+
+    gpupdate /force
+
+    Invoke-WebRequest -Uri $dscOfficeUri -OutFile $dscOffice 
+    winget configuration -f $dscOffice 
+    Remove-Item $dscOffice -verbose
+    Start-Process outlook.exe
+    # TODO - Start teams to hydrate
+    # Ending office workload
+    # ---------------
+    # Staring dev workload
+    Invoke-WebRequest -Uri $dscAdminUri -OutFile $dscAdmin 
+    winget configuration -f $dscAdmin 
    
-   # clean up, Clean up, everyone wants to clean up
-   Remove-Item $dscAdmin -verbose
+    # clean up, Clean up, everyone wants to clean up
+    Remove-Item $dscAdmin -verbose
+    # ending dev workload
 }
