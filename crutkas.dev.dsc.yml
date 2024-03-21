@@ -20,27 +20,25 @@ properties:
         AllowDestructive: true
         FSFormat: 'ReFS'
         Size: '75Gb'
-            
-    - resource: Microsoft.Windows.Developer/HideFileExtensions
+
+# Windows settings
+    - resource: Microsoft.Windows.Developer/WindowsExplorer
       directives:
-        description: Show file extensions.  
+        description: File Explorer settings 
         allowPrerelease: true
       settings:
-        Ensure: Absent
-
-    - resource: Microsoft.Windows.Developer/ShowHiddenFiles
+        FileExtensions: Show
+        HiddenFiles: Show
+    - resource: Microsoft.Windows.Developer/Taskbar
       directives:
-        description: Show hidden files
-      settings:
-        Ensure: Present
-
-    - resource: Microsoft.Windows.Developer/ShowTaskViewButton
-      directives:
-        description: Show Taskview in taskbar.  
+        description: Taskbar settings 
         allowPrerelease: true
       settings:
-        Ensure: Absent # not working currently for some reason
+        SearchboxMode: Hide
+        TaskViewButton: Hide
+        WidgetsButton: Hide
 
+# Getting Git stuff
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: git.git
       directives:
