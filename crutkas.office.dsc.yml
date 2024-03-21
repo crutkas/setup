@@ -13,7 +13,7 @@ properties:
         id: Microsoft.Office
         source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Spotify.Teams
+      id: Microsoft.Teams
       directives:
         description: Install Microsoft.Teams
         allowPrerelease: true
