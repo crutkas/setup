@@ -99,7 +99,7 @@ else {
     winget configuration -f $dscOffice 
     Remove-Item $dscOffice -verbose
     Start-Process outlook.exe
-    Start-Process ms-team.exe
+    Start-Process ms-teams.exe
     Write-Host "Done: Office install"
     # Ending office workload
     # ---------------
