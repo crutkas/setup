@@ -122,6 +122,7 @@ else {
     # Staring dev workload
     Invoke-WebRequest -Uri $dscAdminUri -OutFile $dscAdmin 
     winget configuration -f $dscAdmin 
+    winget configuration -f $dscPowerToysEnterprise # no cleanup needed as this is intentionally local
    
     # clean up, Clean up, everyone wants to clean up
     Remove-Item $dscAdmin -verbose

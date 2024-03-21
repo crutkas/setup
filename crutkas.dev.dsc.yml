@@ -49,7 +49,8 @@ properties:
       settings:
         id: git.git
         source: winget
-        
+
+    # will use the DSC here to get Visual Studio and other items.
     - resource: GitDsc/GitClone
       directives:
         description: Clone the winget-cli repository
@@ -75,22 +76,7 @@ properties:
       settings:
         id: Microsoft.PowerShell
         source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Microsoft.Office
-      directives:
-        description: Install Microsoft.Office
-        allowPrerelease: true
-      settings:
-        id: Microsoft.Office
-        source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Microsoft.Teams
-      directives:
-        description: Install Microsoft.Teams
-        allowPrerelease: true
-      settings:
-        id: Microsoft.Teams
-        source: winget
+
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.PowerToys
       directives:
@@ -108,6 +94,7 @@ properties:
       settings:
         id: AgileBits.1Password
         source: winget
+
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Logitech.OptionsPlus
       directives:
@@ -116,34 +103,3 @@ properties:
       settings:
         id: Logitech.OptionsPlus
         source: winget
-
-# I would call https://github.com/microsoft/PowerToys/blob/main/.configurations/configuration.dsc.yaml but can't directly call since i need enterprise vs community currently.
-# Needs to get dev drive up and working to clone into that 
-    - resource: Microsoft.Windows.Developer/DeveloperMode
-      directives:
-        description: Enable Developer Mode
-        allowPrerelease: true
-      settings:
-        Ensure: Present
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Microsoft.VisualStudio.2022.Enterprise
-      directives:
-        description: Install Microsoft.VisualStudio.2022.Enterprise
-        allowPrerelease: true
-      settings:
-        id: Microsoft.VisualStudio.2022.Enterprise
-        source: winget
-
-    - resource: Microsoft.VisualStudio.DSC/VSComponents
-      dependsOn:
-        - Microsoft.VisualStudio.2022.Enterprise
-      directives:
-        description: Install required VS workloads
-        allowPrerelease: true
-      settings:
-        productId: Microsoft.VisualStudio.Product.Enterprise
-        channelId: VisualStudio.17.Release
-        vsConfigFile: 'Z:\source\powertoys\.vsconfig'
-
-
