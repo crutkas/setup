@@ -81,7 +81,7 @@ else {
    # admin section now
    # ---------------
    # Forcing Windows Update -- goal is move to dsc
-
+   Write-Host "Start: Windows Update"
     $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
     $Searcher = New-Object -ComObject Microsoft.Update.Searcher
     $Session = New-Object -ComObject Microsoft.Update.Session
@@ -97,9 +97,11 @@ else {
  
     $Installer.Updates = $Result.Updates
     $Installer.Install()
+    Write-Host "Done: Windows Update"
     # Forcing Windows Update complete 
     # ---------------
     # Installing office workload
+    Write-Host "Start: Office install"
     New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Force
     New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Name 'DefaultProfile' -Value "OutlookAuto" -PropertyType String -Force
 
@@ -117,14 +119,19 @@ else {
     Remove-Item $dscOffice -verbose
     Start-Process outlook.exe
     # TODO - Start teams to hydrate
+    Write-Host "Done: Office install"
     # Ending office workload
     # ---------------
     # Staring dev workload
+    Write-Host "Start: Dev flows install"
     Invoke-WebRequest -Uri $dscAdminUri -OutFile $dscAdmin 
     winget configuration -f $dscAdmin 
+
+    Write-Host "Start: PowerToys dsc install"
     winget configuration -f $dscPowerToysEnterprise # no cleanup needed as this is intentionally local
    
     # clean up, Clean up, everyone wants to clean up
     Remove-Item $dscAdmin -verbose
+    Write-Host "Done: Dev flows install"
     # ending dev workload
 }
