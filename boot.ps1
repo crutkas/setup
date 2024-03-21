@@ -80,25 +80,6 @@ if (!$isAdmin) {
 else {
    # admin section now
    # ---------------
-   # Forcing Windows Update -- goal is move to dsc
-   Write-Host "Start: Windows Update"
-    $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
-    $Searcher = New-Object -ComObject Microsoft.Update.Searcher
-    $Session = New-Object -ComObject Microsoft.Update.Session
-    $Installer = New-Object -ComObject Microsoft.Update.Installer
- 
-    $Searcher.ServerSelection = 2
- 
-    $Result = $Searcher.Search("IsInstalled=0 and IsHidden=0")
- 
-    $Downloader = $Session.CreateUpdateDownloader()
-    $Downloader.Updates = $Result.Updates
-    $Downloader.Download()
- 
-    $Installer.Updates = $Result.Updates
-    $Installer.Install()
-    Write-Host "Done: Windows Update"
-    # Forcing Windows Update complete 
     # ---------------
     # Installing office workload
     Write-Host "Start: Office install"
@@ -118,10 +99,30 @@ else {
     winget configuration -f $dscOffice 
     Remove-Item $dscOffice -verbose
     Start-Process outlook.exe
-    # TODO - Start teams to hydrate
+    Start-Process ms-team.exe
     Write-Host "Done: Office install"
     # Ending office workload
     # ---------------
+   # Forcing Windows Update -- goal is move to dsc
+   Write-Host "Start: Windows Update"
+    $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
+    $Searcher = New-Object -ComObject Microsoft.Update.Searcher
+    $Session = New-Object -ComObject Microsoft.Update.Session
+    $Installer = New-Object -ComObject Microsoft.Update.Installer
+ 
+    $Searcher.ServerSelection = 2
+ 
+    $Result = $Searcher.Search("IsInstalled=0 and IsHidden=0")
+ 
+    $Downloader = $Session.CreateUpdateDownloader()
+    $Downloader.Updates = $Result.Updates
+    $Downloader.Download()
+ 
+    $Installer.Updates = $Result.Updates
+    $Installer.Install()
+    Write-Host "Done: Windows Update"
+    # Forcing Windows Update complete 
+
     # Staring dev workload
     Write-Host "Start: Dev flows install"
     Invoke-WebRequest -Uri $dscAdminUri -OutFile $dscAdmin 
