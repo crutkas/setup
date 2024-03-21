@@ -13,43 +13,17 @@ Most everything in the dsc.yml should work.
 ## To Run:
 
 1. Open Windows PowerShell
-2. Run boot.ps1
-3. winget configuration -f base.dcs.yml
+2. set execution policy
+3. Copy boot.ps1 to your user folder
+4. run `.boot.ps1`
+5. reset execution policy
 
 ## TO-DO list
-
-### Try outlook setting
-```
-New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Force
-New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Name 'DefaultProfile' -Value "OutlookAuto" -PropertyType String -Force
-
-New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Force
-New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Name 'Default' -Value "" -PropertyType String -Force
-
-
-New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Force
-New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Name 'ZeroConfigExchange' -Value "1" -PropertyType DWORD -Force
-
-gpupdate /force
-
-outlook.exe
-```
-
-### PowerToys dev config
-
-- Migrate to https://github.com/microsoft/PowerToys/blob/main/.configurations/configuration.vsEnterprise.dsc.yaml
 
 ### Windows Terminal
 - Set PowerShell 7 as default
 
-### Bluetooth 
-I doubt this can be scripted out to connect on a new computer.  But I can dream :)
-- Add mouse
-- Add Keyboard
-
 ### File Explorer
-- --Done - Show ext--
-- --Done - Show hidden files--
 - Uncheck "Include account-based insights"
 - Uncheck "show frequently used folders"
 - Check Display the full path in titlebar
@@ -117,8 +91,13 @@ Cannot currently do, only dark / light.  I have hybrid
 - Sidebar disabled
 
 ### Authentication
-- Outlook
 - Visual Studio enterprise
+
+### Bluetooth 
+I doubt this can be scripted out to connect on a new computer.  But I can dream :)
+- Add mouse
+- Add Keyboard
+
 
 ### Logitech Option+ Settings
 - Mouse wheel to ratchet only.
