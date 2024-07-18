@@ -1,6 +1,8 @@
 # crutkas WinGet Configure list
 
-This is my winget configure script to set up a new computer.  Still work in progress.  There will need to be a hybrid of Needing admin to run.  Parts have been validated on an Azure VM but needs more validation.
+This is my winget configure script to set up a new computer.  Still work in progress.  There will need to be a hybrid of Needing admin to run.  
+
+Last validation run: 2024.07.18
 
 Most everything in the dsc.yml should work.
 
@@ -94,7 +96,6 @@ Cannot currently do, only dark / light.  I have hybrid
 I doubt this can be scripted out to connect on a new computer.  But I can dream :)
 - Add mouse
 - Add Keyboard
-
 
 ### Logitech Option+ Settings
 - Mouse wheel to ratchet only.

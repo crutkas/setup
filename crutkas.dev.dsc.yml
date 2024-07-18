@@ -21,23 +21,6 @@ properties:
         FSFormat: 'ReFS'
         Size: '75Gb'
 
-# Windows settings
-    - resource: Microsoft.Windows.Developer/WindowsExplorer
-      directives:
-        description: File Explorer settings 
-        allowPrerelease: true
-      settings:
-        FileExtensions: Show
-        HiddenFiles: Show
-    - resource: Microsoft.Windows.Developer/Taskbar
-      directives:
-        description: Taskbar settings 
-        allowPrerelease: true
-      settings:
-        SearchboxMode: Hide
-        TaskViewButton: Hide
-        WidgetsButton: Hide
-
 # Getting Git stuff
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: git.git
@@ -73,31 +56,4 @@ properties:
         allowPrerelease: true
       settings:
         id: Microsoft.PowerShell
-        source: winget
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Microsoft.PowerToys
-      directives:
-        description: Install Microsoft.PowerToys
-        allowPrerelease: true
-      settings:
-        id: Microsoft.PowerToys
-        source: winget
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: AgileBits.1Password
-      directives:
-        description: Install AgileBits.1Password
-        allowPrerelease: true
-      settings:
-        id: AgileBits.1Password
-        source: winget
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: Logitech.OptionsPlus
-      directives:
-        description: Install Logitech.OptionsPlus
-        allowPrerelease: true
-      settings:
-        id: Logitech.OptionsPlus
         source: winget

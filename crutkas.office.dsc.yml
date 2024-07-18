@@ -3,7 +3,32 @@ properties:
   configurationVersion: 0.2.0
   resources:
   
-# needs non-admin
+    - resource: PSDscResources/Script
+      dependsOn: 
+        - Microsoft.Office
+      id: Office.AutoLoginRegKeySettings
+      directives:
+        description: Configure My App
+        allowPrerelease: true
+      settings:
+        GetScript: |
+          # Your custom PowerShell code to check app configuration
+        TestScript: |
+          return $false
+        SetScript: |
+          # PowerShell script commands to install VSCode extensions
+          Write-Host "Start: Office install"
+          New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Force
+          New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\' -Name 'DefaultProfile' -Value "OutlookAuto" -PropertyType String -Force
+
+          New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Force
+          New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\OutlookAuto' -Name 'Default' -Value "" -PropertyType String -Force
+
+          New-Item -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Force
+          New-ItemProperty -Path 'HKCU:\Software\Microsoft\Office\16.0\Outlook\AutoDiscover' -Name 'ZeroConfigExchange' -Value "1" -PropertyType DWORD -Force
+
+          gpupdate /force
+
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.Office
       directives:
@@ -12,6 +37,7 @@ properties:
       settings:
         id: Microsoft.Office
         source: winget
+
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.Teams
       directives:
@@ -20,3 +46,23 @@ properties:
       settings:
         id: Microsoft.Teams
         source: winget
+
+    - resource: PSDscResources/Script
+      dependsOn: 
+        - Microsoft.Teams
+        - Microsoft.Office
+      id: Office.StartYourEngines
+      directives:
+        description: Configure My App
+        allowPrerelease: true
+      settings:
+        GetScript: |
+          # Your custom PowerShell code to check app configuration
+        TestScript: |
+          return $false
+        SetScript: |
+          # PowerShell script commands to start office
+          Write-Host "Start: ""Starting Office & teams to hydrate"
+          
+          Start-Process outlook.exe
+          Start-Process ms-teams.exe

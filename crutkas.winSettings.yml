@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.2
+# Reference: https://github.com/microsoft/PowerToys/blob/main/doc/devdocs/readme.md#compiling-powertoys
+properties:
+  configurationVersion: 0.2.0
+  resources:
+
+# Windows settings
+    - resource: Microsoft.Windows.Developer/WindowsExplorer
+      directives:
+        description: File Explorer settings 
+        allowPrerelease: true
+      settings:
+        FileExtensions: Show
+        HiddenFiles: Show
+    - resource: Microsoft.Windows.Developer/Taskbar
+      directives:
+        description: Taskbar settings 
+        allowPrerelease: true
+      settings:
+        SearchboxMode: Hide
+        TaskViewButton: Hide
+        WidgetsButton: Hide
+
+    - resource: PSDscResources/Script
+      id: Win.UpdateWindows
+      directives:
+        description: Updating Windows
+        allowPrerelease: true
+      settings:
+        GetScript: |
+          # Your custom PowerShell code to check app configuration
+        TestScript: |
+          return $false
+        SetScript: |
+          # Forcing Windows Update
+          Write-Host "Start: Windows Update"
+          $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
+          $Searcher = New-Object -ComObject Microsoft.Update.Searcher
+          $Session = New-Object -ComObject Microsoft.Update.Session
+          $Installer = New-Object -ComObject Microsoft.Update.Installer
+
+          $Searcher.ServerSelection = 2
+ 
+          $Result = $Searcher.Search("IsInstalled=0 and IsHidden=0")
+
+          $Downloader = $Session.CreateUpdateDownloader()
+          $Downloader.Updates = $Result.Updates
+          $Downloader.Download()
+ 
+          $Installer.Updates = $Result.Updates
+          $Installer.Install()
+          Write-Host "Done: Windows Update"
