@@ -2,7 +2,7 @@ $mypath = $MyInvocation.MyCommand.Path
 Write-Output "Path of the script: $mypath"
 Write-Output "Args for script: $Args"
 
-GetLatestWinGet();
+GetLatestWinGet 
 
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
