@@ -1,50 +1,53 @@
-$mypath = $MyInvocation.MyCommand.Path
-Write-Output "Path of the script: $mypath"
-Write-Output "Args for script: $Args"
-
-GetLatestWinGet 
-
-$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
-$dscUri = "https://raw.githubusercontent.com/crutkas/setup/main/"
-$dscGenSoftware = "crutkas.generalSoftware.dsc.yml";
-$dscWinSettings = "crutkas.winSettings.dsc.yml";
-$dscDev = "crutkas.dev.dsc.yml";
-$dscOffice = "crutkas.office.dsc.yml";
-$dscPowerToysEnterprise = "Z:\source\powertoys\.configurations\configuration.vsEnterprise.dsc.yaml";
-
-$dscOfficeUri = $dscUri + $dscOffice;
-$dscGenSoftwareUri = $dscUri + $dscGenSoftware 
-$dscDevUri = $dscUri + $dscDev
-$dscWinSettingsUri = $dscUri + $dscWinSettings
-
-# amazing, we can now run WinGet get fun stuff
-if (!$isAdmin)
+$mainFunction = 
 {
-    # Shoulder tap terminal to it gets registered moving foward
-    Start-Process shell:AppsFolder\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App
+    $mypath = $MyInvocation.MyCommand.Path
+    Write-Output "Path of the script: $mypath"
+    Write-Output "Args for script: $Args"
 
-    winget configuration -f $dscGenSoftwareUri 
+    GetLatestWinGet 
+
+    $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    $dscUri = "https://raw.githubusercontent.com/crutkas/setup/main/"
+    $dscGenSoftware = "crutkas.generalSoftware.dsc.yml";
+    $dscWinSettings = "crutkas.winSettings.dsc.yml";
+    $dscDev = "crutkas.dev.dsc.yml";
+    $dscOffice = "crutkas.office.dsc.yml";
+    $dscPowerToysEnterprise = "Z:\source\powertoys\.configurations\configuration.vsEnterprise.dsc.yaml";
+
+    $dscOfficeUri = $dscUri + $dscOffice;
+    $dscGenSoftwareUri = $dscUri + $dscGenSoftware 
+    $dscDevUri = $dscUri + $dscDev
+    $dscWinSettingsUri = $dscUri + $dscWinSettings
+
+    # amazing, we can now run WinGet get fun stuff
+    if (!$isAdmin)
+    {
+        # Shoulder tap terminal to it gets registered moving foward
+        Start-Process shell:AppsFolder\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App
+
+        winget configuration -f $dscGenSoftwareUri 
    
-    # restarting for Admin now
-    Start-Process PowerShell -wait -Verb RunAs "-NoProfile -ExecutionPolicy Bypass -Command `"cd '$pwd'; & '$mypath' $Args;`"";
-    exit;
-}
-else 
-{
-    Write-Host "Start: Office & Teams install"
-    winget configuration -f $dscOfficeUri 
-    Write-Host "Done: Office & Teams install"
+        # restarting for Admin now
+        Start-Process PowerShell -wait -Verb RunAs "-NoProfile -ExecutionPolicy Bypass -Command `"cd '$pwd'; & '$mypath' $Args;`"";
+        exit;
+    }
+    else 
+    {
+        Write-Host "Start: Office & Teams install"
+        winget configuration -f $dscOfficeUri 
+        Write-Host "Done: Office & Teams install"
    
-    # Staring dev workload
-    Write-Host "Start: Dev flows install"
-    winget configuration -f $dscDevUri 
+        # Staring dev workload
+        Write-Host "Start: Dev flows install"
+        winget configuration -f $dscDevUri 
 
-    Write-Host "Start: PowerToys dsc install"
-    winget configuration -f $dscPowerToysEnterprise # no cleanup needed as this is intentionally local
+        Write-Host "Start: PowerToys dsc install"
+        winget configuration -f $dscPowerToysEnterprise # no cleanup needed as this is intentionally local
 
-    Write-Host "Done: Dev flows install"
-    # ending dev workload
+        Write-Host "Done: Dev flows install"
+        # ending dev workload
+    }
 }
 
 function GetLatestWinGet
@@ -97,3 +100,5 @@ function GetLatestWinGet
        Write-Host "WinGet in decent state, moving to executing DSC"
     }
 }
+
+& $mainFunction
