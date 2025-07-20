@@ -58,7 +58,7 @@ function GetLatestWinGet
     # turning off progress bar to make invoke WebRequest fast
     $ProgressPreference = 'SilentlyContinue'
 
-    if(!(($isWinGetRecent[0] -gt 1) -or ($isWinGetRecent[0] -ge 1 -and $isWinGetRecent[1] -ge 6))) # WinGet is greater than v1 or v1.6 or higher
+    if(!(([int]$isWinGetRecent[0] -gt 1) -or ([int]$isWinGetRecent[0] -ge 1 -and [int]$isWinGetRecent[1] -ge 6))) # WinGet is greater than v1 or v1.6 or higher
     {
        $paths = "Microsoft.VCLibs.x64.14.00.Desktop.appx", "Microsoft.UI.Xaml.2.8.x64.appx", "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
        $uris = "https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx", "https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.6/Microsoft.UI.Xaml.2.8.x64.appx", "https://aka.ms/getwinget"
