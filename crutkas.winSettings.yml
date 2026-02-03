@@ -32,41 +32,8 @@ properties:
         TestScript: |
           return $false
         SetScript: |
-          Add-Type -AssemblyName System.Security
-          Add-Type -AssemblyName System.Management.Automation
-          
-          function Update-Package {
-              param (
-                  [string]$packageFamilyName
-              )
-          
-              try {
-                  Write-Output ">> Updating $packageFamilyName"
-                  $appInstallManager = [Windows.ApplicationModel.Store.Preview.InstallControl.AppInstallManager]::new()
-                  $user = [Windows.System.User]::GetDefault()
-                  $updateTask = $appInstallManager.UpdateAppByPackageFamilyNameForUserAsync($user, $packageFamilyName, "");
-              } catch {
-                  Write-Output "!! Error updating $packageFamilyName"
-              }
-          }
-          
-          
-          function Get-AllPackages {
-              $packageManager = [Windows.Management.Deployment.PackageManager,Windows.Web,ContentType=WindowsRuntime]::new()
-              $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
-              $packages = $packageManager.FindPackagesForUser($user.Value)
-          
-              $result = @()
-              foreach ($package in $packages) {
-                  $result += $package.Id.FamilyName
-              }
-              return $result
-          }
-          
-          $allPackages = Get-AllPackages
-          $allPackages | ForEach-Object {
-              Update-Package "$_"
-          }
+          wsreset -u
+          store updates --apply
 
     - resource: PSDscResources/Script
       id: Win.UpdateWindows
