@@ -57,25 +57,29 @@ properties:
         allowPrerelease: true
       settings:
         GetScript: |
-          # Your custom PowerShell code to check app configuration
+          return @{ Result = 'Always checked during configuration' }
         TestScript: |
           return $false
         SetScript: |
-          # Forcing Windows Update
-          Write-Host "Start: Windows Update"
-          $UpdateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
-          $Searcher = New-Object -ComObject Microsoft.Update.Searcher
-          $Session = New-Object -ComObject Microsoft.Update.Session
-          $Installer = New-Object -ComObject Microsoft.Update.Installer
+          $uri = 'https://raw.githubusercontent.com/crutkas/setup/main/scripts/Update-Windows.ps1'
+          $path = Join-Path $env:TEMP "Update-Windows-$([guid]::NewGuid().ToString('N')).ps1"
 
-          $Searcher.ServerSelection = 2
- 
-          $Result = $Searcher.Search("IsInstalled=0 and IsHidden=0")
+          try {
+              Invoke-WebRequest -Uri $uri -OutFile $path -UseBasicParsing
 
-          $Downloader = $Session.CreateUpdateDownloader()
-          $Downloader.Updates = $Result.Updates
-          $Downloader.Download()
- 
-          $Installer.Updates = $Result.Updates
-          $Installer.Install()
-          Write-Host "Done: Windows Update"
+              & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+                  -NoProfile -NonInteractive -ExecutionPolicy Bypass `
+                  -File $path
+
+              # 3010 means updates installed successfully but a restart is
+              # required to finish. Treat that as success, not failure.
+              if ($LASTEXITCODE -eq 3010) {
+                  Write-Host 'Windows Update installed updates; a restart is required to finish.'
+              }
+              elseif ($LASTEXITCODE -ne 0) {
+                  throw "Windows Update failed with exit code $LASTEXITCODE."
+              }
+          }
+          finally {
+              Remove-Item $path -Force -ErrorAction SilentlyContinue
+          }
