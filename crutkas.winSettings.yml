@@ -28,12 +28,27 @@ properties:
         allowPrerelease: true
       settings:
         GetScript: |
-          # Your custom PowerShell code to check app configuration
+          return @{ Result = 'Always checked during configuration' }
         TestScript: |
           return $false
         SetScript: |
-          wsreset -u
-          store updates --apply
+          $uri = 'https://raw.githubusercontent.com/crutkas/setup/main/scripts/Update-MicrosoftStoreApps.ps1'
+          $path = Join-Path $env:TEMP "Update-MicrosoftStoreApps-$([guid]::NewGuid().ToString('N')).ps1"
+
+          try {
+              Invoke-WebRequest -Uri $uri -OutFile $path -UseBasicParsing
+
+              & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+                  -NoProfile -NonInteractive -ExecutionPolicy Bypass `
+                  -File $path -ThrottleLimit 4
+
+              if ($LASTEXITCODE -ne 0) {
+                  throw "Store updates failed with exit code $LASTEXITCODE."
+              }
+          }
+          finally {
+              Remove-Item $path -Force -ErrorAction SilentlyContinue
+          }
 
     - resource: PSDscResources/Script
       id: Win.UpdateWindows
