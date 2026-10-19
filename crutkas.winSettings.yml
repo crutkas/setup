@@ -22,6 +22,38 @@ properties:
         WidgetsButton: Hide
 
     - resource: PSDscResources/Script
+      id: Win.BlackArrowCursor
+      directives:
+        description: Black Aero arrow mouse pointer (all other pointers stay standard Aero)
+        allowPrerelease: true
+      settings:
+        GetScript: |
+          $arrow = (Get-ItemProperty -LiteralPath 'HKCU:\Control Panel\Cursors' -Name Arrow -ErrorAction SilentlyContinue).Arrow
+          return @{ Result = "$arrow" }
+        TestScript: |
+          $expected = Join-Path $env:LOCALAPPDATA 'CustomCursors\AeroBlack\aero_arrow.cur'
+          $arrow = (Get-ItemProperty -LiteralPath 'HKCU:\Control Panel\Cursors' -Name Arrow -ErrorAction SilentlyContinue).Arrow
+          return ($arrow -eq $expected) -and (Test-Path -LiteralPath $expected)
+        SetScript: |
+          $uri = 'https://raw.githubusercontent.com/crutkas/setup/main/scripts/Set-BlackArrowCursor.ps1'
+          $path = Join-Path $env:TEMP "Set-BlackArrowCursor-$([guid]::NewGuid().ToString('N')).ps1"
+
+          try {
+              Invoke-WebRequest -Uri $uri -OutFile $path -UseBasicParsing
+
+              & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+                  -NoProfile -NonInteractive -ExecutionPolicy Bypass `
+                  -File $path
+
+              if ($LASTEXITCODE -ne 0) {
+                  throw "Black arrow cursor setup failed with exit code $LASTEXITCODE."
+              }
+          }
+          finally {
+              Remove-Item $path -Force -ErrorAction SilentlyContinue
+          }
+
+    - resource: PSDscResources/Script
       id: Win.StoreUpdate
       directives:
         description: Updating Store Apps, we care mostly about Terminal and App installer
