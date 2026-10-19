@@ -20,6 +20,18 @@ Most everything in the dsc.yml should work.
 4. run `.boot.ps1`
 5. reset execution policy
 
+## Mouse pointer: black arrow only
+
+`scripts\Set-BlackArrowCursor.ps1` (run by `crutkas.winSettings.yml`) makes only the normal-select arrow black while keeping the Windows 11 Aero arrow shape; every other pointer stays standard Aero. The black arrow is generated on the machine from `%SystemRoot%\Cursors\aero_arrow.cur` (no cursor files are stored in this repo) and applied per-user as the `Aero (Black arrow)` scheme. No admin required.
+
+Run it directly:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Set-BlackArrowCursor.ps1
+```
+
+To undo: run `main.cpl`, open **Pointers**, pick the **Windows Default** scheme, and click **Apply**.
+
 ## TO-DO list
 
 ### Windows Terminal
